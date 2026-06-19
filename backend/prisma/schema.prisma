@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id                String     @id @default(uuid()) @db.VarChar(36)
+  name              String     @db.VarChar(100)
+  email             String     @unique @db.VarChar(255)
+  primaryMobile     String     @db.VarChar(15)
+  secondaryMobile   String?    @db.VarChar(15)
+  aadhaar           String     @unique @db.Char(12)
+  pan               String     @unique @db.Char(10)
+  dateOfBirth       DateTime   @db.Date
+  placeOfBirth      String     @db.VarChar(255)
+  currentAddress    String     @db.Text
+  permanentAddress  String     @db.Text
+
+  // Optional improvements
+  gender            Gender?
+  profilePhotoUrl   String?    @db.VarChar(500)
+  status            UserStatus @default(ACTIVE)
+  emailVerified     Boolean    @default(false)
+  mobileVerified    Boolean    @default(false)
+
+  // Audit fields
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  deletedAt         DateTime?
+  isDeleted         Boolean    @default(false)
+  version           Int        @default(1)
+  createdBy         String     @db.VarChar(100)
+  updatedBy         String     @db.VarChar(100)
+
+  // Indexes
+  @@index([name], name: "idx_name")
+  @@index([primaryMobile], name: "idx_primaryMobile")
+  @@index([isDeleted], name: "idx_isDeleted")
+
+  @@map("users")
+}
