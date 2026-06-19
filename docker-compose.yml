@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # ─── MySQL Database ─────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: requip-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: requip_db
+      MYSQL_USER: requip_user
+      MYSQL_PASSWORD: requip_password
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-prootpassword']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - requip-network
+
+  # ─── Backend API ────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: requip-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: mysql://root:rootpassword@mysql:3306/requip_db
+      CORS_ORIGIN: http://localhost:5173
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX_REQUESTS: 100
+      LOG_LEVEL: info
+    ports:
+      - '3000:3000'
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - requip-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  requip-network:
+    driver: bridge
