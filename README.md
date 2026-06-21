@@ -4,7 +4,7 @@ A production-ready, full-stack User Management System built with **Express.js**,
 
 ---
 
-## 🏗 Architecture Overview
+## Architecture Overview
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -41,7 +41,7 @@ A production-ready, full-stack User Management System built with **Express.js**,
 
 ---
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```
 requip/
@@ -50,7 +50,7 @@ requip/
 │   │   ├── config/          # Database, env, logger configuration
 │   │   ├── controllers/     # HTTP request/response handling
 │   │   ├── docs/            # Swagger/OpenAPI specification
-│   │   ├── middleware/       # Error handler, validation, logging
+│   │   ├── middleware/      # Error handler, validation, logging
 │   │   ├── models/          # TypeScript interfaces
 │   │   ├── repositories/    # Database operations (Prisma)
 │   │   ├── routes/          # Route definitions
@@ -71,14 +71,12 @@ requip/
 │   │   └── utils/           # Zod validation schemas
 │   └── package.json
 ├── docker-compose.yml
-├── README.md
-├── LEARNINGS.md
-└── COMMIT_PLAN.md
+└── README.md
 ```
 
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 
@@ -143,7 +141,7 @@ npm run dev
 
 ---
 
-## 📚 API Documentation
+## API Documentation
 
 ### Endpoints
 
@@ -157,13 +155,13 @@ npm run dev
 
 ### Query Parameters (GET /api/v1/users)
 
-| Param      | Type    | Default     | Description                    |
-|------------|---------|-------------|--------------------------------|
-| `page`     | number  | 1           | Page number                    |
-| `limit`    | number  | 10          | Records per page (max 100)     |
+| Param      | Type    | Default     | Description                       |
+|------------|---------|-------------|-----------------------------------|
+| `page`     | number  | 1           | Page number                       |
+| `limit`    | number  | 10          | Records per page (max 100)        |
 | `sortBy`   | string  | createdAt   | name, email, createdAt, updatedAt |
-| `sortOrder`| string  | desc        | asc or desc                    |
-| `search`   | string  | —           | Search by name, email, mobile  |
+| `sortOrder`| string  | desc        | asc or desc                       |
+| `search`   | string  | —           | Search by name, email, mobile     |
 
 ### Response Format
 
@@ -185,7 +183,7 @@ Full interactive docs available at **http://localhost:3000/api-docs**
 
 ---
 
-## 🎨 Design Decisions
+## Design Decisions
 
 1. **Clean Architecture** — Separates concerns into layers (Routes → Controllers → Services → Repositories) for testability and maintainability.
 
@@ -203,7 +201,7 @@ Full interactive docs available at **http://localhost:3000/api-docs**
 
 ---
 
-## 🔒 Security Measures
+## Security Measures
 
 | Measure              | Implementation                                        |
 |----------------------|-------------------------------------------------------|
@@ -217,7 +215,7 @@ Full interactive docs available at **http://localhost:3000/api-docs**
 
 ---
 
-## ⚡ Performance Optimizations
+## Performance Optimizations
 
 1. **Database Indexes** — Unique indexes on email, aadhaar, pan; composite index on isDeleted for soft-delete filtering.
 2. **Parallel Queries** — `Promise.all` for count + data fetch in pagination.
@@ -228,7 +226,7 @@ Full interactive docs available at **http://localhost:3000/api-docs**
 
 ---
 
-## 🧪 Testing Instructions
+## Testing Instructions
 
 ```bash
 cd backend
@@ -245,11 +243,11 @@ npm run test:coverage
 # - Controller integration (HTTP endpoints via Supertest)
 ```
 
-**Coverage Target:** ≥80% lines, functions, statements
+**Coverage Target:** >=80% lines, functions, statements
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
 - [ ] JWT authentication with role-based access control
 - [ ] Redis caching for frequently accessed user data
