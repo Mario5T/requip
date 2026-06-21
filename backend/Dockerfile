@@ -7,8 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Install dependencies
-RUN npm ci --only=production && \
+# Install ALL dependencies (including devDependencies for tsc)
+RUN npm ci && \
     npx prisma generate
 
 # Copy source
@@ -25,11 +25,14 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copy built app and dependencies
+# Copy package files and install production-only dependencies
+COPY package*.json ./
+COPY prisma ./prisma/
+RUN npm ci --omit=dev && \
+    npx prisma generate
+
+# Copy built app
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/prisma ./prisma
 
 # Create logs directory
 RUN mkdir -p logs
